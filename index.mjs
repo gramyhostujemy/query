@@ -45,7 +45,7 @@ class SourceQuery {
                     this.challange = A2S_CHALLANGE(data).challange;
                     break;
                 case 0x44:
-                    this.players = A2S_PLAYERS(data, info.app_id);
+                    this.players = A2S_PLAYERS(data, this.info.app_id);
                     break;
                 case 0x45:
                     this.rules = A2S_RULES(data);
@@ -74,7 +74,7 @@ class SourceQuery {
             const socket = dgram.createSocket('udp4');
             await socket.send(Buffer.from('\xFF\xFF\xFF\xFFU' + '\xFF\xFF\xFF\xFF', 'ascii'), this.port, this.ip); // A2S_PLAYER_CHALLANGE
             parse(await socket.recv());
-            await socket.send(Buffer.concat([Buffer.from('\xFF\xFF\xFF\xFFU', 'ascii'), challange]), this.port, this.ip); // A2S_PLAYERS
+            await socket.send(Buffer.concat([Buffer.from('\xFF\xFF\xFF\xFFU', 'ascii'), this.challange]), this.port, this.ip); // A2S_PLAYERS
             parse(await socket.recv());
             await socket.close();
 
@@ -85,7 +85,7 @@ class SourceQuery {
             const socket = dgram.createSocket('udp4');
             await socket.send(Buffer.from('\xFF\xFF\xFF\xFFV' + '\xFF\xFF\xFF\xFF', 'ascii'), this.port, this.ip); // A2S_RULES_CHALLANGE
             parse(await socket.recv());
-            await socket.send(Buffer.concat([Buffer.from('\xFF\xFF\xFF\xFFV', 'ascii'), challange]), this.port, this.ip); // A2S_RULES
+            await socket.send(Buffer.concat([Buffer.from('\xFF\xFF\xFF\xFFV', 'ascii'), this.challange]), this.port, this.ip); // A2S_RULES
             parse(await socket.recv());
             parse(await socket.recv());
             parse({ msg: Buffer.concat(payloads[last_id]) });
